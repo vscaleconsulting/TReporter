@@ -41,7 +41,7 @@ async def filter_and_submit_report(usernames,message):
                     to_append = [f"{message_date}",usr,message_channel.username,message_text] 
                     insert_spread(to_append)
     except Exception as e:
-        print("user does not exist")
+        print(e,"user does not exist")
 
 
 async def t_scrapper(starting_link,ending_link,usernames=[]):
