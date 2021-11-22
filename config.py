@@ -1,12 +1,14 @@
 api_id = "13321231"
 api_hash = "87fab454b4d6eb4429017cd45ee64cc8"
-bot_token = "2145534514:AAFouNt214VBLN1nlzqeZZnMQPVDRhPfWhw"
+
+#your username
 name = 'cyberspoof'
-phone = "+919382084913"
 
 
-spreadsheet_url = "https://docs.google.com/spreadsheets/d/1st6Hlbw0HUjk083ZQ5BfTGa8W27WQu6Lcv7nr9XbTA0/edit#gid=0"
 spread_user_cred_json_file_addr = "cred.json"
 
-fetch_spreadsheet_url = "https://docs.google.com/spreadsheets/d/1ROaeVV4a__XnKvSktAky0D3H6uD282Mc3gAzvFn3_yw/edit?usp=sharing"
-usernames = ["btczoro","bitsats","azm007","Yasar92","Pinkman000","Onlygems","btcluffy","Crypto_raja1","btcNoor","cry77"]
+#input spred url containing links
+fetch_spreadsheet_url = "https://docs.google.com/spreadsheets/d/1RlA_t9v1frCcTxsn6HNdA_SBzAHoX2LJhMnmsIJ4Ovw/edit#gid=0"
+
+# usernames text without @ symbol
+usernames = ["Deep1bravo","shariq990","alphacrypto4","btczoro","piratedante","kevin_strange","rishabhterrabyte","beep420","btcNoor","PSYYDUDE","farhanraza365","Atf0019","navy_2801","dinojt","william_mender","DavidSolomon20","taufeeq_19","Bitsats","Sameer_7788","krag9","aryansingh0607","ayan6067","crypto_candy6"]
