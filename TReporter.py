@@ -7,7 +7,7 @@ import gspread
 import config
 import csv
 
-url = config.spreadsheet_url
+# url = config.spreadsheet_url
 gc = gspread.service_account(filename=config.spread_user_cred_json_file_addr)
 gsheet = gc.open_by_url(url)
 worksheet = gsheet.worksheets()[0]
