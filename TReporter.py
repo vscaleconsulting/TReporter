@@ -4,6 +4,7 @@ from telethon.tl.functions.channels import JoinChannelRequest
 from telethon.tl.functions.messages import GetMessagesRequest
 from telethon.tl.types import PeerChat
 import gspread
+import  time
 import config
 
 url = config.spreadsheet_url
@@ -24,25 +25,27 @@ def insert_spread(values=[]):
     print("empty values passed")
     
 async def filter_and_submit_report(usernames,message):
-    try:
-        message_posted_by_username = await client.get_entity(message.from_id.user_id)
+    
+    username_entity = await client.get_entity(message.from_id.user_id)
+    message_posted_by_username = username_entity.username
+    if(message_posted_by_username is not None):
         for usr in usernames:
-                if usr.lower()==message_posted_by_username.username.lower():
-                    message_text = message.message
-                    message_channel = await client.get_entity(message.peer_id.channel_id)
-                    message_date = message.date.date()
-                    
-                    # print("text: ",message_text)
-                    # print("username: ",message_posted_by_username.username)
-                    # print("channel: ",message_channel.username)
-                    # print("date: ",message_date)
-                    # print("-----------------")
+            if usr.lower()==message_posted_by_username.lower():
+                message_text = message.message
+                message_channel = await client.get_entity(message.peer_id.channel_id)
+                message_date = message.date.date()
+                        
+                        # print("text: ",message_text)
+                        # print("username: ",message_posted_by_username.username)
+                        # print("channel: ",message_channel.username)
+                        # print("date: ",message_date)
+                        # print("-----------------")
 
-                    to_append = [f"{message_date}",usr,message_channel.username,message_text] 
-                    insert_spread(to_append)
-    except Exception as e:
-        print(e,"user does not exist")
-
+                to_append = [f"{message_date}",usr,message_channel.username,message_text] 
+                insert_spread(to_append)
+                time.sleep(0.1)
+    
+        
 
 async def t_scrapper(starting_link,ending_link,usernames=[]):
     print(starting_link,ending_link)
@@ -54,13 +57,16 @@ async def t_scrapper(starting_link,ending_link,usernames=[]):
 
     messages = client.iter_messages(
         channel_entity,
-        limit=1000,
+        limit=5000,
         min_id=int(starting_message_id),
         max_id=int(ending_message_id),
-        # reverse=True
+        reverse=True
     )
+    count = 0
 
     async for message in messages:
+        print(count)
+        count+=1
         await filter_and_submit_report(usernames,message)
 
 def get_links(url):
