@@ -4,8 +4,8 @@ from telethon.tl.functions.channels import JoinChannelRequest
 from telethon.tl.functions.messages import GetMessagesRequest
 from telethon.tl.types import PeerChat
 import gspread
-import  time
 import config
+import csv
 
 url = config.spreadsheet_url
 gc = gspread.service_account(filename=config.spread_user_cred_json_file_addr)
@@ -25,26 +25,30 @@ def insert_spread(values=[]):
     print("empty values passed")
     
 async def filter_and_submit_report(usernames,message):
-    
-    username_entity = await client.get_entity(message.from_id.user_id)
-    message_posted_by_username = username_entity.username
-    if(message_posted_by_username is not None):
-        for usr in usernames:
-            if usr.lower()==message_posted_by_username.lower():
-                message_text = message.message
-                message_channel = await client.get_entity(message.peer_id.channel_id)
-                message_date = message.date.date()
-                        
-                        # print("text: ",message_text)
-                        # print("username: ",message_posted_by_username.username)
-                        # print("channel: ",message_channel.username)
-                        # print("date: ",message_date)
-                        # print("-----------------")
+    try:
+        username_entity = await client.get_entity(message.from_id.user_id)
+        message_posted_by_username = username_entity.username
+        if(message_posted_by_username is not None):
+            for usr in usernames:
+                if usr.lower()==message_posted_by_username.lower():
+                    message_text = message.message
+                    message_channel = await client.get_entity(message.peer_id.channel_id)
+                    message_date = message.date.date()
+                            
+                            # print("text: ",message_text)
+                            # print("username: ",message_posted_by_username.username)
+                            # print("channel: ",message_channel.username)
+                            # print("date: ",message_date)
+                            # print("-----------------")
+                    
+                    to_append = [f"{message_date}",usr,message_channel.username,message_text] 
+                    with open('report.csv','a') as f:
+                        writer = csv.writer(f)
+                        writer.writerow(to_append)
 
-                to_append = [f"{message_date}",usr,message_channel.username,message_text] 
-                insert_spread(to_append)
-                time.sleep(0.1)
-    
+                
+    except Exception as e:
+        print(e,"no worries, its a log of error")
         
 
 async def t_scrapper(starting_link,ending_link,usernames=[]):
@@ -84,11 +88,12 @@ async def main():
     usernames = config.usernames
     
     for i in range(len(starting_links)):
-        await t_scrapper(starting_links[i], ending_links[i],usernames)
-    
+        try:
+            await t_scrapper(starting_links[i], ending_links[i],usernames)
+        except Exception as e:
+            print(e,"exception handeled")
 
 
 with client:
     client.loop.run_until_complete(main())
 
-  
