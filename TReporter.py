@@ -1,3 +1,8 @@
+"""
+Author: Swapnil Shinde <Username:AtmegaBuzz>
+Vscale Consulting LLP
+"""
+
 from telethon import TelegramClient
 from telethon.errors import SessionPasswordNeededError
 from telethon.tl.functions.channels import JoinChannelRequest
